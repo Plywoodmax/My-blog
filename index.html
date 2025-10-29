@@ -1,1 +1,259 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Мой простой блог — шаблон</title>
+  <style>
+    /* Простая приятная стилизация */
+    :root{--bg:#f7f7f9;--card:#ffffff;--muted:#6b7280;--accent:#0ea5a4}
+    *{box-sizing:border-box}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.5;margin:0;background:var(--bg);color:#111}
+    header{background:linear-gradient(90deg,#ffffff, #f1f5f9);padding:24px 16px;border-bottom:1px solid #e6edf0}
+    .container{max-width:900px;margin:24px auto;padding:0 16px}
+    h1{margin:0 0 6px;font-size:28px}
+    p.lead{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+    .post-title{margin:0 0 8px}
+    .meta{color:var(--muted);font-size:13px;margin-bottom:12px}
+    .content img{max-width:100%;border-radius:8px}
+    .small{font-size:13px;color:var(--muted)}
+    footer{padding:30px 16px;text-align:center;color:var(--muted)}
 
+    /* admin form */
+    .admin{display:flex;flex-direction:column;gap:8px}
+    input[type=text],textarea{padding:8px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px}
+    textarea{min-height:120px}
+    .row{display:flex;gap:8px}
+    button{background:var(--accent);color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer}
+    button.secondary{background:#64748b}
+    .comments{margin-top:12px;border-top:1px dashed #e6edf0;padding-top:12px}
+    .comment{padding:8px;border-radius:8px;background:#fbfdfe;margin-bottom:8px}
+    .tools{display:flex;gap:8px;flex-wrap:wrap}
+    pre{background:#0f172a;color:#f8fafc;padding:12px;border-radius:8px;overflow:auto}
+
+    @media(min-width:880px){.grid{grid-template-columns:2fr 1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Мой блог</h1>
+      <p class="lead">Простой стартовый шаблон: тексты, фото, комментарии (локально). Готово для размещения на GitHub Pages.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <div>
+        <div id="posts"></div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3>Админ: создать пост</h3>
+          <div class="small">Для доступа введите пароль администратора (в шаблоне — <code>admin</code>)</div>
+          <div style="margin-top:8px" id="admin-area">
+            <input id="admin-pass" type="text" placeholder="Ввести пароль для редактирования" />
+            <div style="height:8px"></div>
+            <div id="admin-controls" style="display:none">
+              <div class="admin">
+                <input id="post-title" type="text" placeholder="Заголовок" />
+                <input id="post-excerpt" type="text" placeholder="Короткое описание (анонс)" />
+                <textarea id="post-md" placeholder="Текст поста (поддерживается Markdown)"></textarea>
+                <div class="small">Добавить изображение (оно будет закодировано в файл):</div>
+                <input id="post-image" type="file" accept="image/*" />
+                <div class="row">
+                  <button id="save-post">Сохранить пост</button>
+                  <button id="export-json" class="secondary">Экспорт JSON</button>
+                  <button id="import-json" class="secondary">Импорт JSON</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Инструменты</h3>
+          <div class="tools">
+            <button id="clear-all" class="secondary">Удалить все локальные данные</button>
+            <button id="backup" class="secondary">Скачать бекап (JSON)</button>
+          </div>
+          <div style="margin-top:10px" class="small">Примечание: этот шаблон хранит записи и комментарии в <code>localStorage</code>. Это удобно для теста и локального хостинга, но не подходит для реального многопользовательского блога.</div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Как опубликовать бесплатно</h3>
+          <ol class="small">
+            <li>Зарегистрируйте аккаунт на GitHub (если ещё нет).</li>
+            <li>Создайте репозиторий и загрузите этот файл как <code>index.html</code>.</li>
+            <li>Включите GitHub Pages для ветки <code>main</code> (Settings → Pages).</li>
+          </ol>
+          <div class="small">Чтобы добавить реальную систему комментариев (кросс‑пользовательскую), можно подключить <strong>Utterances</strong> или <strong>Giscus</strong> (используют GitHub Issues/Discussions) — это бесплатно, но потребует создать репозиторий и сконфигурировать его. Инструкции внутри файла.</div>
+        </div>
+      </aside>
+    </div>
+
+    <div style="margin-top:20px" class="card">
+      <h3>Резерв и экспорт</h3>
+      <div class="small">Нажмите «Экспорт JSON» чтобы получить текущие записи. При утере данных — можно восстановить с помощью «Импорт JSON».</div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container small">Шаблон сгенерирован автоматически. Могу помочь настроить под твои нужды — скажи, какие функции важны (собственный домен, внешние комментарии, авторизация и т.д.).</div>
+  </footer>
+
+  <!-- Библиотека для парсинга Markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    // --- Константы / простая конфигурация ---
+    const ADMIN_PASSWORD = 'admin'; // поменяй перед публикацией
+    const STORAGE_KEY = 'simple_blog_v1';
+
+    // --- Утилиты ---
+    function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+
+    function loadData(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {posts:[]};
+      }catch(e){console.error(e);return {posts:[]}}}
+    function saveData(data){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
+
+    // --- Рендеринг ---
+    const postsEl = document.getElementById('posts');
+    function render(){
+      const data = loadData();
+      postsEl.innerHTML = '';
+      if(!data.posts.length){
+        postsEl.innerHTML = '<div class="card">Пока нет постов. Создай первый в админке.</div>';
+        return;
+      }
+      data.posts.slice().reverse().forEach(post=>{
+        const el = document.createElement('div'); el.className='card';
+        const title = document.createElement('h2'); title.className='post-title'; title.textContent = post.title;
+        const meta = document.createElement('div'); meta.className='meta'; meta.textContent = new Date(post.created).toLocaleString();
+        const excerpt = document.createElement('p'); excerpt.textContent = post.excerpt||'';
+        const content = document.createElement('div'); content.className='content';
+        content.innerHTML = marked.parse(post.md||'');
+        if(post.image){
+          const img = document.createElement('img'); img.src = post.image; img.alt = post.title; img.style.marginTop='10px';
+          content.prepend(img);
+        }
+        el.appendChild(title); el.appendChild(meta); el.appendChild(excerpt); el.appendChild(content);
+
+        // Комментарии
+        const commentsWrap = document.createElement('div'); commentsWrap.className='comments';
+        const commentHeader = document.createElement('div'); commentHeader.className='small'; commentHeader.textContent='Комментарии:';
+        commentsWrap.appendChild(commentHeader);
+        const list = document.createElement('div');
+        const comments = post.comments||[];
+        comments.forEach(c=>{
+          const cEl = document.createElement('div'); cEl.className='comment';
+          cEl.innerHTML = `<strong>${escapeHtml(c.name)}</strong> <span class="small">• ${new Date(c.when).toLocaleString()}</span><div>${escapeHtml(c.text)}</div>`;
+          list.appendChild(cEl);
+        });
+        commentsWrap.appendChild(list);
+
+        // Форма комментария
+        const form = document.createElement('div'); form.style.marginTop='8px';
+        form.innerHTML = `
+          <input placeholder="Ваше имя" class="c-name" style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px" />
+          <textarea placeholder="Комментарий" class="c-text" style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:8px"></textarea>
+          <div style="height:8px"></div>
+          <button class="c-send">Оставить</button>
+        `;
+        commentsWrap.appendChild(form);
+
+        el.appendChild(commentsWrap);
+        postsEl.appendChild(el);
+
+        form.querySelector('.c-send').addEventListener('click',()=>{
+          const name = form.querySelector('.c-name').value.trim()||'Аноним';
+          const text = form.querySelector('.c-text').value.trim();
+          if(!text) {alert('Напишите комментарий'); return}
+          const data = loadData();
+          const idx = data.posts.findIndex(p=>p.id===post.id);
+          if(idx===-1) return alert('Пост не найден');
+          data.posts[idx].comments = data.posts[idx].comments || [];
+          data.posts[idx].comments.push({id:uid(),name:textShrink(name,30),text:textShrink(text,1000),when:Date.now()});
+          saveData(data); render();
+        });
+
+      });
+    }
+
+    // --- Админ ---
+    const passInput = document.getElementById('admin-pass');
+    const adminControls = document.getElementById('admin-controls');
+    passInput.addEventListener('input',()=>{
+      if(passInput.value===ADMIN_PASSWORD){adminControls.style.display='block'}else{adminControls.style.display='none'}})
+
+    document.getElementById('post-image').addEventListener('change',async(e)=>{
+      const f = e.target.files[0];
+      if(!f) return;
+      const dataUrl = await readFileAsDataURL(f);
+      document.getElementById('post-image').dataset.preview = dataUrl;
+      alert('Изображение загружено и будет встроено в пост (будет увеличивать размер файла).');
+    })
+
+    document.getElementById('save-post').addEventListener('click',async()=>{
+      const title = document.getElementById('post-title').value.trim();
+      const md = document.getElementById('post-md').value.trim();
+      if(!title||!md){alert('Добавьте заголовок и текст');return}
+      const img = document.getElementById('post-image').dataset.preview || null;
+      const data = loadData();
+      data.posts.push({id:uid(),title:title,excerpt:document.getElementById('post-excerpt').value.trim(),md:md,image:img,created:Date.now(),comments:[]});
+      saveData(data); clearForm(); render();
+    })
+
+    function clearForm(){document.getElementById('post-title').value='';document.getElementById('post-md').value='';document.getElementById('post-excerpt').value='';document.getElementById('post-image').value='';delete document.getElementById('post-image').dataset.preview}
+
+    // Экспорт / импорт
+    document.getElementById('export-json').addEventListener('click',()=>{
+      const data = loadData();
+      const blob = new Blob([JSON.stringify(data, null, 2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='blog-backup.json'; a.click(); URL.revokeObjectURL(url);
+    })
+    document.getElementById('import-json').addEventListener('click',()=>{
+      const input = document.createElement('input'); input.type='file'; input.accept='application/json';
+      input.onchange = e=>{const f=e.target.files[0];const r=new FileReader();r.onload=()=>{try{const json=JSON.parse(r.result);saveData(json);render();alert('Импортировано');}catch(er){alert('Неверный файл')}};r.readAsText(f)};input.click();
+    })
+
+    document.getElementById('backup').addEventListener('click',()=>{document.getElementById('export-json').click()})
+
+    document.getElementById('clear-all').addEventListener('click',()=>{if(confirm('Удалить все данные блога из localStorage?')){localStorage.removeItem(STORAGE_KEY);render();alert('Удалено')}})
+
+    // --- Вспомогательные функции ---
+    function readFileAsDataURL(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
+    function escapeHtml(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function textShrink(s,n){return s.length>n? s.slice(0,n-1)+'…':s}
+
+    // --- Инициализация demo данных (если пусто) ---
+    (function initDemo(){
+      const data = loadData();
+      if(!data.posts.length){
+        data.posts.push({id:uid(),title:'Привет! Это первый пост',excerpt:'Добро пожаловать в мой блог — начни с этого шаблона',md:'Это *пример* поста. Здесь поддерживается **Markdown** — можно писать заголовки, списки, вставлять изображения и т.д.\n\nДобавь свой контент через панель администратора справа.',image:null,created:Date.now(),comments:[]});
+        saveData(data);
+      }
+    })();
+
+    render();
+
+    // --- Инструкции по подключению внешних комментариев (Utterances / Giscus)
+    /*
+      Utterances (использует GitHub Issues) — бесплатный гостевой комментарий.
+      1) Создай репозиторий на GitHub.
+      2) Перейди: https://utteranc.es и сгенерируй embed script, указав репозиторий и разрешения.
+      3) Вставь сгенерированный <script> в место, где сейчас рендерятся локальные комментарии, или вместо них.
+
+      Giscus (использует Discussions) — похожая идея, немного больше функционала.
+
+      Оба решения публичны и не требуют собственного сервера. Подойдут для GitHub Pages.
+    */
+  </script>
+</body>
+</html>
