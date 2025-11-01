@@ -1,259 +1,358 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Мой простой блог — шаблон</title>
-  <style>
-    /* Простая приятная стилизация */
-    :root{--bg:#f7f7f9;--card:#ffffff;--muted:#6b7280;--accent:#0ea5a4}
-    *{box-sizing:border-box}
-    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.5;margin:0;background:var(--bg);color:#111}
-    header{background:linear-gradient(90deg,#ffffff, #f1f5f9);padding:24px 16px;border-bottom:1px solid #e6edf0}
-    .container{max-width:900px;margin:24px auto;padding:0 16px}
-    h1{margin:0 0 6px;font-size:28px}
-    p.lead{margin:0;color:var(--muted)}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
-    .post-title{margin:0 0 8px}
-    .meta{color:var(--muted);font-size:13px;margin-bottom:12px}
-    .content img{max-width:100%;border-radius:8px}
-    .small{font-size:13px;color:var(--muted)}
-    footer{padding:30px 16px;text-align:center;color:var(--muted)}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Блог - Добро пожаловать</title>
+    <style>
+        /* Сброс и базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* admin form */
-    .admin{display:flex;flex-direction:column;gap:8px}
-    input[type=text],textarea{padding:8px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px}
-    textarea{min-height:120px}
-    .row{display:flex;gap:8px}
-    button{background:var(--accent);color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer}
-    button.secondary{background:#64748b}
-    .comments{margin-top:12px;border-top:1px dashed #e6edf0;padding-top:12px}
-    .comment{padding:8px;border-radius:8px;background:#fbfdfe;margin-bottom:8px}
-    .tools{display:flex;gap:8px;flex-wrap:wrap}
-    pre{background:#0f172a;color:#f8fafc;padding:12px;border-radius:8px;overflow:auto}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
 
-    @media(min-width:880px){.grid{grid-template-columns:2fr 1fr}}
-  </style>
+        /* Навигация */
+        .navbar {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #3498db;
+        }
+
+        /* Герой секция */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Сетка постов */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .post-excerpt {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+
+        /* Обо мне */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            margin: 0 auto;
+        }
+
+        /* Контакты */
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            padding: 1rem 2rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .contact-link:hover {
+            background: #2980b9;
+        }
+
+        /* Футер */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
+    <!-- Навигация -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Мой Блог</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#blog">Блог</a></li>
+                <li><a href="#about">Обо мне</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Герой секция -->
+    <section class="hero" id="home">
+        <h1>Добро пожаловать в мой блог</h1>
+        <p>Здесь я делюсь своими мыслями, идеями и опытом. Присоединяйтесь к обсуждению!</p>
+    </section>
+
+    <!-- Секция блога -->
     <div class="container">
-      <h1>Мой блог</h1>
-      <p class="lead">Начинаю изучать вопрос " как создать сайт?".</p>
-    </div>
-  </header>
+        <section class="section" id="blog">
+            <h2 class="section-title">Последние посты</h2>
+            <div class="posts-grid">
+                <!-- Пост 1 -->
+                <article class="post-card">
+                    <div class="post-image">📝</div>
+                    <div class="post-content">
+                        <div class="post-date">1 ноября 2024</div>
+                        <h3 class="post-title">Мой первый пост в обновленном блоге</h3>
+                        <p class="post-excerpt">Приветствую всех в моем обновленном блоге! Здесь будет много интересного контента...</p>
+                        <a href="#" class="read-more">Читать далее →</a>
+                    </div>
+                </article>
 
-  <main class="container">
-    <div class="grid">
-      <div>
-        <div id="posts"></div>
-      </div>
+                <!-- Пост 2 -->
+                <article class="post-card">
+                    <div class="post-image">🚀</div>
+                    <div class="post-content">
+                        <div class="post-date">29 октября 2024</div>
+                        <h3 class="post-title">Как я создал этот блог на Netlify</h3>
+                        <p class="post-excerpt">Рассказываю о своем опыте развертывания статического сайта на Netlify и GitHub Pages...</p>
+                        <a href="#" class="read-more">Читать далее →</a>
+                    </div>
+                </article>
 
-      <aside>
-        <div class="card">
-          <h3>Админ: создать пост</h3>
-          <div class="small">Для доступа введите пароль администратора <code></code>)</div>
-          <div style="margin-top:8px" id="admin-area">
-            <input id="admin-pass" type="text" placeholder="Ввести пароль для редактирования" />
-            <div style="height:8px"></div>
-            <div id="admin-controls" style="display:none">
-              <div class="admin">
-                <input id="post-title" type="text" placeholder="Заголовок" />
-                <input id="post-excerpt" type="text" placeholder="Короткое описание (анонс)" />
-                <textarea id="post-md" placeholder="Текст поста (поддерживается Markdown)"></textarea>
-                <div class="small">Добавить изображение (оно будет закодировано в файл):</div>
-                <input id="post-image" type="file" accept="image/*" />
-                <div class="row">
-                  <button id="save-post">Сохранить пост</button>
-                  <button id="export-json" class="secondary">Экспорт JSON</button>
-                  <button id="import-json" class="secondary">Импорт JSON</button>
-                </div>
-              </div>
+                <!-- Пост 3 -->
+                <article class="post-card">
+                    <div class="post-image">💡</div>
+                    <div class="post-content">
+                        <div class="post-date">25 октября 2024</div>
+                        <h3 class="post-title">Идеи для будущих постов</h3>
+                        <p class="post-excerpt">Планирую писать о веб-разработке, дизайне и личном опыте. Какие темы вам интересны?...</p>
+                        <a href="#" class="read-more">Читать далее →</a>
+                    </div>
+                </article>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div class="card" style="margin-top:12px">
-          <h3>Инструменты</h3>
-          <div class="tools">
-            <button id="clear-all" class="secondary">Удалить все локальные данные</button>
-            <button id="backup" class="secondary">Скачать бекап (JSON)</button>
-          </div>
-          <div style="margin-top:10px" class="small">Примечание: этот шаблон хранит записи и комментарии в <code>localStorage</code>. Это удобно для теста и локального хостинга, но не подходит для реального многопользовательского блога.</div>
-        </div>
+        <!-- Секция "Обо мне" -->
+        <section class="section" id="about">
+            <h2 class="section-title">Обо мне</h2>
+            <div class="about-content">
+                <div class="avatar">👤</div>
+                <div>
+                    <h3>Привет! Я автор этого блога</h3>
+                    <p>Здесь будет ваше описание. Расскажите о себе, своих увлечениях, профессиональном опыте и целях ведения блога.</p>
+                    <p>Вы можете написать о своих интересах, проектах, или поделиться историей того, как начали вести блог.</p>
+                </div>
+            </div>
+        </section>
 
-        <div class="card" style="margin-top:12px">
-          <h3>Как опубликовать бесплатно</h3>
-          <ol class="small">
-            <li>Зарегистрируйте аккаунт на GitHub (если ещё нет).</li>
-            <li>Создайте репозиторий и загрузите этот файл как <code>index.html</code>.</li>
-            <li>Включите GitHub Pages для ветки <code>main</code> (Settings → Pages).</li>
-          </ol>
-          <div class="small">Чтобы добавить реальную систему комментариев (кросс‑пользовательскую), можно подключить <strong>Utterances</strong> или <strong>Giscus</strong> (используют GitHub Issues/Discussions) — это бесплатно, но потребует создать репозиторий и сконфигурировать его. Инструкции внутри файла.</div>
-        </div>
-      </aside>
+        <!-- Секция контактов -->
+        <section class="section" id="contact">
+            <h2 class="section-title">Свяжитесь со мной</h2>
+            <div class="contact-links">
+                <a href="mailto:your-email@example.com" class="contact-link">Email</a>
+                <a href="https://github.com/yourusername" class="contact-link">GitHub</a>
+                <a href="https://t.me/yourusername" class="contact-link">Telegram</a>
+                <a href="https://vk.com/yourusername" class="contact-link">VK</a>
+            </div>
+        </section>
     </div>
 
-    <div style="margin-top:20px" class="card">
-      <h3>Резерв и экспорт</h3>
-      <div class="small">Нажмите «Экспорт JSON» чтобы получить текущие записи. При утере данных — можно восстановить с помощью «Импорт JSON».</div>
-    </div>
-  </main>
+    <!-- Футер -->
+    <footer class="footer">
+        <p>&copy; 2024 Мой Блог. Все права защищены.</p>
+    </footer>
 
-  <footer>
-    <div class="container small">Шаблон сгенерирован автоматически. Могу помочь настроить под твои нужды — скажи, какие функции важны (собственный домен, внешние комментарии, авторизация и т.д.).</div>
-  </footer>
-
-  <!-- Библиотека для парсинга Markdown -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    // --- Константы / простая конфигурация ---
-    const ADMIN_PASSWORD = 'admin'; // поменяй перед публикацией
-    const STORAGE_KEY = 'simple_blog_v1';
-
-    // --- Утилиты ---
-    function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
-
-    function loadData(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : {posts:[]};
-      }catch(e){console.error(e);return {posts:[]}}}
-    function saveData(data){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
-
-    // --- Рендеринг ---
-    const postsEl = document.getElementById('posts');
-    function render(){
-      const data = loadData();
-      postsEl.innerHTML = '';
-      if(!data.posts.length){
-        postsEl.innerHTML = '<div class="card">Пока нет постов. Создай первый в админке.</div>';
-        return;
-      }
-      data.posts.slice().reverse().forEach(post=>{
-        const el = document.createElement('div'); el.className='card';
-        const title = document.createElement('h2'); title.className='post-title'; title.textContent = post.title;
-        const meta = document.createElement('div'); meta.className='meta'; meta.textContent = new Date(post.created).toLocaleString();
-        const excerpt = document.createElement('p'); excerpt.textContent = post.excerpt||'';
-        const content = document.createElement('div'); content.className='content';
-        content.innerHTML = marked.parse(post.md||'');
-        if(post.image){
-          const img = document.createElement('img'); img.src = post.image; img.alt = post.title; img.style.marginTop='10px';
-          content.prepend(img);
-        }
-        el.appendChild(title); el.appendChild(meta); el.appendChild(excerpt); el.appendChild(content);
-
-        // Комментарии
-        const commentsWrap = document.createElement('div'); commentsWrap.className='comments';
-        const commentHeader = document.createElement('div'); commentHeader.className='small'; commentHeader.textContent='Комментарии:';
-        commentsWrap.appendChild(commentHeader);
-        const list = document.createElement('div');
-        const comments = post.comments||[];
-        comments.forEach(c=>{
-          const cEl = document.createElement('div'); cEl.className='comment';
-          cEl.innerHTML = `<strong>${escapeHtml(c.name)}</strong> <span class="small">• ${new Date(c.when).toLocaleString()}</span><div>${escapeHtml(c.text)}</div>`;
-          list.appendChild(cEl);
-        });
-        commentsWrap.appendChild(list);
-
-        // Форма комментария
-        const form = document.createElement('div'); form.style.marginTop='8px';
-        form.innerHTML = `
-          <input placeholder="Ваше имя" class="c-name" style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px" />
-          <textarea placeholder="Комментарий" class="c-text" style="width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:8px"></textarea>
-          <div style="height:8px"></div>
-          <button class="c-send">Оставить</button>
-        `;
-        commentsWrap.appendChild(form);
-
-        el.appendChild(commentsWrap);
-        postsEl.appendChild(el);
-
-        form.querySelector('.c-send').addEventListener('click',()=>{
-          const name = form.querySelector('.c-name').value.trim()||'Аноним';
-          const text = form.querySelector('.c-text').value.trim();
-          if(!text) {alert('Напишите комментарий'); return}
-          const data = loadData();
-          const idx = data.posts.findIndex(p=>p.id===post.id);
-          if(idx===-1) return alert('Пост не найден');
-          data.posts[idx].comments = data.posts[idx].comments || [];
-          data.posts[idx].comments.push({id:uid(),name:textShrink(name,30),text:textShrink(text,1000),when:Date.now()});
-          saveData(data); render();
+    <script>
+        // Плавная прокрутка для навигации
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
 
-      });
-    }
-
-    // --- Админ ---
-    const passInput = document.getElementById('admin-pass');
-    const adminControls = document.getElementById('admin-controls');
-    passInput.addEventListener('input',()=>{
-      if(passInput.value===ADMIN_PASSWORD){adminControls.style.display='block'}else{adminControls.style.display='none'}})
-
-    document.getElementById('post-image').addEventListener('change',async(e)=>{
-      const f = e.target.files[0];
-      if(!f) return;
-      const dataUrl = await readFileAsDataURL(f);
-      document.getElementById('post-image').dataset.preview = dataUrl;
-      alert('Изображение загружено и будет встроено в пост (будет увеличивать размер файла).');
-    })
-
-    document.getElementById('save-post').addEventListener('click',async()=>{
-      const title = document.getElementById('post-title').value.trim();
-      const md = document.getElementById('post-md').value.trim();
-      if(!title||!md){alert('Добавьте заголовок и текст');return}
-      const img = document.getElementById('post-image').dataset.preview || null;
-      const data = loadData();
-      data.posts.push({id:uid(),title:title,excerpt:document.getElementById('post-excerpt').value.trim(),md:md,image:img,created:Date.now(),comments:[]});
-      saveData(data); clearForm(); render();
-    })
-
-    function clearForm(){document.getElementById('post-title').value='';document.getElementById('post-md').value='';document.getElementById('post-excerpt').value='';document.getElementById('post-image').value='';delete document.getElementById('post-image').dataset.preview}
-
-    // Экспорт / импорт
-    document.getElementById('export-json').addEventListener('click',()=>{
-      const data = loadData();
-      const blob = new Blob([JSON.stringify(data, null, 2)],{type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download='blog-backup.json'; a.click(); URL.revokeObjectURL(url);
-    })
-    document.getElementById('import-json').addEventListener('click',()=>{
-      const input = document.createElement('input'); input.type='file'; input.accept='application/json';
-      input.onchange = e=>{const f=e.target.files[0];const r=new FileReader();r.onload=()=>{try{const json=JSON.parse(r.result);saveData(json);render();alert('Импортировано');}catch(er){alert('Неверный файл')}};r.readAsText(f)};input.click();
-    })
-
-    document.getElementById('backup').addEventListener('click',()=>{document.getElementById('export-json').click()})
-
-    document.getElementById('clear-all').addEventListener('click',()=>{if(confirm('Удалить все данные блога из localStorage?')){localStorage.removeItem(STORAGE_KEY);render();alert('Удалено')}})
-
-    // --- Вспомогательные функции ---
-    function readFileAsDataURL(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
-    function escapeHtml(s){return (s+'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-    function textShrink(s,n){return s.length>n? s.slice(0,n-1)+'…':s}
-
-    // --- Инициализация demo данных (если пусто) ---
-    (function initDemo(){
-      const data = loadData();
-      if(!data.posts.length){
-        data.posts.push({id:uid(),title:'Привет! Это первый пост',excerpt:'Добро пожаловать в мой блог — начни с этого шаблона',md:'Это *пример* поста. Здесь поддерживается **Markdown** — можно писать заголовки, списки, вставлять изображения и т.д.\n\nДобавь свой контент через панель администратора справа.',image:null,created:Date.now(),comments:[]});
-        saveData(data);
-      }
-    })();
-
-    render();
-
-    // --- Инструкции по подключению внешних комментариев (Utterances / Giscus)
-    /*
-      Utterances (использует GitHub Issues) — бесплатный гостевой комментарий.
-      1) Создай репозиторий на GitHub.
-      2) Перейди: https://utteranc.es и сгенерируй embed script, указав репозиторий и разрешения.
-      3) Вставь сгенерированный <script> в место, где сейчас рендерятся локальные комментарии, или вместо них.
-
-      Giscus (использует Discussions) — похожая идея, немного больше функционала.
-
-      Оба решения публичны и не требуют собственного сервера. Подойдут для GitHub Pages.
-    */
-  </script>
+        // Добавляем тень навигации при скролле
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
 </body>
 </html>
